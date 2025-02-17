@@ -2,12 +2,11 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Contracts\Validation\Validator as ValidationValidator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Contracts\Validation\Validator;
 
-class UserRequest extends FormRequest
+class UserLoginRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,15 +24,12 @@ class UserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'username' => ['required', 'unique:users,username', 'max:50'],
-            'address' => ['max:100', 'nullable'],
-            'phone' => ['nullable'],
-            'email' => ['required', 'email:dns', 'unique:users,email'],
-            'password' => ['required', 'min:3', 'max:10']
+            'username' => ['required'],
+            'password' => ['required']
         ];
     }
 
-    protected function failedValidation(ValidationValidator $validator)
+    protected function failedValidation(Validator $validator)
     {
         throw new HttpResponseException(response([
             'errors' => $validator->getMessageBag()
